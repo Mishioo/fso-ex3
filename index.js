@@ -1,10 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors')
 
 app = express()
 
-app.use(cors())
+app.use(express.static('build'))
 app.use(express.json())
 
 morgan.token('post', (req, resp) => {
@@ -36,10 +35,6 @@ let persons = [
     "id": 4
   }
 ]
-
-app.get('/', (req, resp) => {
-  resp.send("<h1>Hello there, general Kenobi!</h1>")
-})
 
 app.get('/info', (req, resp) => {
   let now = new Date()
