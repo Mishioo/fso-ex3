@@ -6,15 +6,16 @@ if (process.argv.length < 3) {
 }
 
 const pass = process.argv[2]
-const url = 
+const url =
   `mongodb+srv://koliber55:${pass}@cluster0.bnip9.mongodb.net/phonebook?retryWrites=true&w=majority`
 
 mongoose.connect(
-  url,
-  {useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true}
+  url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  }
 )
 
 const personSchema = new mongoose.Schema({
@@ -37,10 +38,10 @@ if (process.argv.length === 3) {
     name: process.argv[3],
     number: process.argv[4],
   })
-  person.save().then(result => {
+  person.save().then(() => {
     console.log(`${person.name} added to Phonebook.`)
     mongoose.connection.close()
   })
 } else {
-  console.log('Wrong numbers of parameters provided. Exiting.');
+  console.log('Wrong numbers of parameters provided. Exiting.')
 }

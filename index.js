@@ -3,13 +3,14 @@ const express = require('express')
 const morgan = require('morgan')
 const Person = require('./models/person')
 
-app = express()
+const app = express()
 
 app.use(express.static('build'))
 app.use(express.json())
 
+// eslint-disable-next-line no-unused-vars
 morgan.token('post', (req, resp) => {
-  return req.method === "POST" ? JSON.stringify(req.body) : ''
+  return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
 app.use(morgan(
   ':method :url :status :res[content-length] - :response-time ms :post'
@@ -18,7 +19,7 @@ app.use(morgan(
 app.get('/info', (req, resp, next) => {
   let now = new Date()
   Person.find({})
-    .then(result => 
+    .then(result =>
       resp.send(
         `<div>Phonebook has ${result.length} entries.<br/>${now.toUTCString()}</div>`
       )
@@ -30,7 +31,7 @@ app.get('/api/persons', (req, resp) => {
 })
 
 app.post('/api/persons', (req, resp, next) => {
-  const newPerson = new Person ({...req.body})
+  const newPerson = new Person ({ ...req.body })
   console.log('adding new person to database')
   newPerson.save()
     .then(savedPerson => savedPerson.toJSON())
@@ -50,14 +51,14 @@ app.get('/api/persons/:id', (req, resp, next) => {
 
 app.put('/api/persons/:id', (req, resp, next) => {
   console.log(`PUT at ID ${req.params.id} attempted.`)
-  const updatedPerson = {'number': req.body.number }
+  const updatedPerson = { 'number': req.body.number }
   Person.findByIdAndUpdate(req.params.id, updatedPerson, { 'new': true })
     .then(result => resp.json(result))
     .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (req, resp, next) => {
-  Person.findByIdAndDelete(req.params.id).then(result => {
+  Person.findByIdAndDelete(req.params.id).then(() => {
     resp.status(204).end()
   }).catch(error => next(error))
 })
